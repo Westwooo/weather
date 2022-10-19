@@ -47,11 +47,16 @@ func GetCurrentWeather(res *Result, lat float64, lon float64) {
 		lonString + "&current_weather=true"
 
 	resp, err := http.Get(getString)
-
 	if err != nil {
 		print("Could not get the current weather")
 	}
 
+	defer resp.Body.Close()
+
 	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Could not read the rsponse body")
+	}
+
 	json.Unmarshal(body, &res)
 }
